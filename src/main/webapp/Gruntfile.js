@@ -2,9 +2,9 @@
 module.exports = function(grunt) {
 
     var config = {
-        performancePath: 'resource/frontEnd/dist',
-        performanceCssPath: 'resource/frontEnd/style',
-        localPerformancePath : 'resource/frontEnd',
+        distPath: 'resource/frontEnd/dist',
+        // performanceCssPath: 'resource/frontEnd/style',
+        localPath : 'resource/frontEnd',
         requireConfigPath : 'resource/frontEnd/app.js'
     };
 
@@ -15,36 +15,34 @@ module.exports = function(grunt) {
 
         //해당 폴더 삭제
         clean: {
-            build: ['<%= path.performancePath %>','<%= path.performanceCssPath %>'],
+            // build: ['<%= path.distPath %>','<%= path.performanceCssPath %>'],
+            build: ['<%= path.distPath %>'],
         },
         //파일 병합
-        concat: {
-            melonlib: {
-                src:[
-                    'resource/script/web/common/cript.js',
-                ],
-                dest: '<%= path.performancePath %>/lib.js'
-            }
-        },
+        // concat: {
+        //     lib: {
+        //         src:[
+        //             'resource/script/web/common/script.js',
+        //         ],
+        //         dest: '<%= path.distPath %>/lib.js'
+        //     }
+        // },
         //css 파일 병합
-        cssmin: {
-            target: {
-                files: {
-                    '<%= path.performanceCssPath %>/performanceStyle.css': [
-                        'resource/style/web/common/common.css',
-                        'resource/style/web/common/detailview.css',
-                        'resource/style/web/common/event.css',
-                    ]
-                }
-            }
-        },
+        // cssmin: {
+        //     target: {
+        //         files: {
+        //             '<%= path.performanceCssPath %>/test1.css': [
+        //                 'resource/style/web/common/test2.css',
+        //             ]
+        //         }
+        //     }
+        // },
         //파일 압축
         uglify: {
             my_target: {
                 files: {
-                    '<%= path.performancePath %>/lib.min.js' :'<%= path.performancePath %>/lib.js',
-                    '<%= path.performancePath %>/performanceController.min.js' :'<%= path.performancePath %>/performanceController.js',
-                    '<%= path.performancePath %>/headerController.min.js' :'<%= path.performancePath %>/headerController.js'
+                    // '<%= path.distPath %>/lib.min.js' :'<%= path.distPath %>/lib.js',
+                    '<%= path.distPath %>/testController.min.js' :'<%= path.distPath %>/testController.js'
                 }
             }
         },
@@ -53,8 +51,7 @@ module.exports = function(grunt) {
             dev: {
                 options: {
                     match: [
-                        'resource/frontEnd/dist/performanceController.js',
-                        'resource/frontEnd/dist/headerController.js',
+                        'resource/frontEnd/app/test/testController.js',
                         'resource/frontEnd/app.js'
                     ],
                     position: 'append',
@@ -65,9 +62,7 @@ module.exports = function(grunt) {
                 },
                 files: {
                     src: [
-                        'WEB-INF/views/performance/index.jsp',
-                        'WEB-INF/layouts/performance/include/top.jsp',
-                        'WEB-INF/layouts/performance/include/script.jsp'
+                        'WEB-INF/views/main/index.jsp',
                     ]
                 }
             }
@@ -76,22 +71,12 @@ module.exports = function(grunt) {
         requirejs: {
             testController1: {
                 options: {
-                    baseUrl : '<%= path.localPerformancePath %>',
-                    name : 'js/app/performance/controller/performanceController',
+                    baseUrl : '<%= path.localPath %>',
+                    name : 'app/test/testController',
                     mainConfigFile : '<%= path.requireConfigPath %>',
                     optimize : 'none',
                     // exclude : ["jquery","underscore"],
-                    out : '<%= path.performancePath %>/performanceController.js'
-                }
-            },
-            testController2: {
-                options: {
-                    baseUrl : '<%= path.localPerformancePath %>',
-                    name : 'js/app/common/controller/headerController',
-                    mainConfigFile : '<%= path.requireConfigPath %>',
-                    optimize : 'none',
-                    // exclude : ["jquery","underscore"],
-                    out : '<%= path.performancePath %>/headerController.js'
+                    out : '<%= path.distPath %>/testController.js'
                 }
             }
         }
@@ -108,7 +93,8 @@ module.exports = function(grunt) {
 
 
     // Default task(s) : 즉, grunt 명령어로 실행할 작업
-    grunt.registerTask('build', ['clean','concat','cssmin','requirejs','cachebreaker','uglify']);
+    // grunt.registerTask('build', ['clean','concat','cssmin','requirejs','cachebreaker','uglify']);
+    grunt.registerTask('build', ['clean','requirejs','cachebreaker','uglify']);
 
 
 };
